@@ -1,0 +1,82 @@
+=============splunk=====
+
+1)--- launch two instances 1.cluster master, 2. universal forwarder
+
+down load the cluster master by using below link   go to this url 
+
+https://www.splunk.com/en_us/download/splunk-enterprise.html
+
+
+2) Login into splunk-cluster  and change it hostname to splunk-cluster
+
+#  hostnamectl set-hostname splunk-cluster
+
+# hostname -F /etc/hostname
+
+
+3)Download and upload into s3 and copy it in splunk-cluster server   any where but It  extract default path is     
+
+cd/opt/
+
+wget https://s3.amazonaws.com/splunk-for/splunkforwarder-7.2.4-8a94541dcfac-linux-2.6-x86_64.rpm
+
+4) rpm -ivh splunk-for/splunkforwarder-7.2.4-8a94541dcfac-linux-2.6-x86_64.rpm
+
+ give 777 permissions to the extract file ("chmod -R 777 splunk")
+
+5) start the splunk instance --> cd /splunk/bin --> 
+
+	 ./splunk start --accept-license
+
+
+6) now check in the browser with the public ip -->   "<ip>:8000"
+
+
+Enable security group with tcp 8000 from anywhere
+
+7) login and  with password  then it will redirect to splunk page       username:admin   password:mahesh220
+
+8) click on "search & reporting" on left hand side 
+
+9) now search index="main" .  By default it will not show any searches bcoz we didn't set any logs to that instance. 
+
+
+10) cd /opt/splunk/bin -->   ./splunk enable listen 1997
+
+and it will show msg like this "Listening for Splunk data on TCP port 9997."
+
+10> now go to browser and check the cluster master splunk page and then go to search page and observe "what to search" section....
+ it will show how many events are there and latest events timings.
+
+11> now search index="main" and it will show the logs.
+
+
+--- 2.universal forwarder instance
+
+download universal forwader rpm package for linux and extract it  
+
+https://www.splunk.com/en_us/download/universal-forwarder.html
+
+===download the package 
+
+wget https://s3.ap-south-1.amazonaws.com/splunk-forwarder1/splunkforwarder-7.2.4-8a94541dcfac-linux-2.6-x86_64.rpm
+
+rpm -ivh splunkforwarder-7.2.4-8a94541dcfac-linux-2.6-x86_64.rpm
+
+chmod -R 777 splunkforwarder
+
+./splunk start --accept-license   and give the password 
+
+./splunk add forward-server 13.234.136.130:9997
+
+
+ entering the details it will show the msg like this "Added forwarding to: 34.207.109.166:9997."
+ By this the data forwading pipeline is ready but we didn't men
+
+
+splunk default path is /opt/splunkforwarder
+
+
+
+
+

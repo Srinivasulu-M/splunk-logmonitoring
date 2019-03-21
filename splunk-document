@@ -69,10 +69,7 @@ chmod -R 777 splunkforwarder
 
 ./splunk add forward-server 13.234.136.130:9997
 
-
- entering the details it will show the msg like this "Added forwarding to: 34.207.109.166:9997."
- By this the data forwading pipeline is ready but we didn't men
-
+./splunk add monitor /var/log/messages -index main -sourcetype MyUFServerLogs
 
 splunk default path is /opt/splunkforwarder
 

@@ -74,6 +74,63 @@ chmod -R 777 splunkforwarder
 splunk default path is /opt/splunkforwarder
 
 
+every time we are start the service  no need to start the service are giving script in /etc/init.d/functions
+
+. /etc/init.d/functions
+ 
+ splunk_start() {
+   echo Starting Splunk...
+   "/opt/splunk/splunkforwarder/bin/splunk" start --no-prompt --answer-yes
+   RETVAL=$?
+   [ $RETVAL -eq 0 ] && touch /var/lock/subsys/splunk
+ }
+ splunk_stop() {
+   echo Stopping Splunk...
+   "/opt/splunk/splunkforwarder/bin/splunk" stop
+   RETVAL=$?
+   [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/splunk
+ }
+ splunk_restart() {
+   echo Restarting Splunk...
+   "/opt/splunk/splunkforwarder/bin/splunk" restart
+   RETVAL=$?
+   [ $RETVAL -eq 0 ] && touch /var/lock/subsys/splunk
+ }
+ splunk_status() {
+   echo Splunk status:
+   "/opt/splunk/splunkforwarder/bin/splunk" status
+   RETVAL=$?
+ }
+ case "$1" in
+   start)
+     splunk_start
+     ;;
+   stop)
+     splunk_stop
+     ;;
+   restart)
+     splunk_restart
+     ;;
+   status)
+     splunk_status
+     ;;
+   *)
+     echo "Usage: $0 {start|stop|restart|status}"
+     exit 1
+     ;;
+ esac
+ 
+ exit $RETVAL
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ splunk enable boot-start
+
+
 
 
 
